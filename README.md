@@ -6,12 +6,19 @@ Interview-ready Flutter sample focused on **clean architecture**, **BLoC-only st
 
 End-to-end walkthrough on Android: home → **Card Scanner** (native `card_scanner` + Luhn validation + masked PAN) → **Passbook Scanner** (camera / gallery + ML Kit OCR + structured bank fields).
 
-<video src="assets/demo/app_demo.mp4" controls width="100%">
-  Your browser does not support embedded video.
-  <a href="assets/demo/app_demo.mp4">Download the demo recording (MP4)</a>
+Watch the demo below directly in this README (after you push `assets/demo/app_demo.mp4` to `main`):
+
+<video controls autoplay muted playsinline loop width="100%" style="max-width: 100%; border-radius: 12px;">
+  <source src="https://raw.githubusercontent.com/umangsojitra388-cell/assignment/main/assets/demo/app_demo.mp4" type="video/mp4">
+  <source src="assets/demo/app_demo.mp4" type="video/mp4">
 </video>
 
-> **File:** [`assets/demo/app_demo.mp4`](assets/demo/app_demo.mp4) (~12 MB) — committed with the repo so this README shows the demo after `git push`.
+| | |
+|---|---|
+| **Stream in browser** | [Open demo video (MP4)](https://raw.githubusercontent.com/umangsojitra388-cell/assignment/main/assets/demo/app_demo.mp4) |
+| **Repo file** | [`assets/demo/app_demo.mp4`](assets/demo/app_demo.mp4) (~12 MB) |
+
+> If the player is empty before your first push, commit and push the video file, then refresh this page on GitHub.
 
 ## Features
 
