@@ -1,4 +1,4 @@
-import 'package:assignment/parsers/passbook_parser.dart';
+import 'package:assignment/features/passbook_scanner/parser/passbook_parser.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

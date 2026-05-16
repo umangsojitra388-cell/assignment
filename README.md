@@ -1,134 +1,103 @@
-# Flutter OCR Scanner
+# OCR Scanner (Flutter)
 
-A Flutter assignment app that captures document images, runs on-device OCR, and extracts structured data from **payment cards** and **bank passbooks**.
+Interview-ready Flutter sample focused on **clean architecture**, **BLoC-only state management** (no `setState`, no Provider/Riverpod/GetX in app code), and **robust manual parsing** (Luhn, card parser, passbook parser).
 
-## Project Overview
+## App demo (screen recording)
 
-This project demonstrates an end-to-end OCR pipeline: image capture → text recognition (Google ML Kit) → preprocessing → regex/manual parsing → validated UI output. Business logic is separated from UI layers to keep the codebase maintainable and testable.
+End-to-end walkthrough on Android: home → **Card Scanner** (native `card_scanner` + Luhn validation + masked PAN) → **Passbook Scanner** (camera / gallery + ML Kit OCR + structured bank fields).
+
+<video src="assets/demo/app_demo.mp4" controls width="100%">
+  Your browser does not support embedded video.
+  <a href="assets/demo/app_demo.mp4">Download the demo recording (MP4)</a>
+</video>
+
+> **File:** [`assets/demo/app_demo.mp4`](assets/demo/app_demo.mp4) (~12 MB) — committed with the repo so this README shows the demo after `git push`.
 
 ## Features
 
-### Card Scanner
-- Capture card images via camera
-- On-device OCR with ML Kit
-- Parse card number, expiry date, and cardholder name
-- Luhn validation for card numbers
-- Masked card number display (`XXXX XXXX XXXX 1234`)
+| Module | What it does |
+|--------|----------------|
+| **Card Scanner** | Scan debit/credit card via `card_scanner`; extract number, expiry, holder name; mask PAN (`XXXX XXXX XXXX 1234`); validate with manual **Luhn**; handle OCR noise (`O`→`0`, `I`→`1`, separators). |
+| **Passbook Scanner** | Capture from **camera** or **gallery**; ML Kit text recognition; parse account holder, account number, IFSC; score candidates; partial / error states with image preview. |
 
-### Passbook Scanner
-- Capture via camera or upload from gallery
-- Extract account holder name, account number, and IFSC code
-- Heuristics to reduce false positives (phones, labels, IFSC overlap)
+## Requirements
 
-### Shared
-- OCR text normalization (spacing, common digit misreads)
-- Material 3 UI with loading and error states
-- Unit tests for validator and parsers
+- [Flutter](https://docs.flutter.dev/get-started/install) **stable** channel (SDK `^3.11.1` in this repo).
+- Android device or emulator with **camera** access for both modules.
 
-## Folder Structure
-
-```
-lib/
-├── main.dart
-├── models/
-│   ├── card_details.dart
-│   └── bank_details.dart
-├── services/
-│   ├── ocr_service.dart
-│   ├── card_scan_service.dart
-│   └── passbook_scan_service.dart
-├── parsers/
-│   ├── card_parser.dart
-│   └── passbook_parser.dart
-├── validators/
-│   └── luhn_validator.dart
-├── utils/
-│   ├── text_cleaner.dart
-│   ├── name_filter.dart
-│   └── card_mask.dart
-└── screens/
-    ├── home_screen.dart
-    ├── card_scanner_screen.dart
-    └── passbook_scanner_screen.dart
-
-test/
-├── luhn_validator_test.dart
-├── card_parser_test.dart
-└── passbook_parser_test.dart
-```
-
-## Packages Used
-
-| Package | Purpose |
-|---------|---------|
-| [google_mlkit_text_recognition](https://pub.dev/packages/google_mlkit_text_recognition) | On-device OCR |
-| [image_picker](https://pub.dev/packages/image_picker) | Camera and gallery image capture |
-| flutter_test | Unit testing (dev) |
-| flutter_lints | Static analysis (dev) |
-
-## How to Run
-
-### Prerequisites
-- Flutter SDK (3.11+)
-- Android Studio / Xcode for mobile builds
-- A **physical device** is recommended (camera + ML Kit)
-
-### Steps
+## Setup
 
 ```bash
-# Install dependencies
 flutter pub get
-
-# Run on a connected device
 flutter run
 ```
 
-**Android:** Camera permission is declared in `AndroidManifest.xml`.  
-**iOS:** Camera and photo library usage descriptions are in `Info.plist`.
-
-## Assumptions
-
-- OCR input is a reasonably clear photo of a card or passbook page
-- Card numbers follow common 13–19 digit formats (often 16 digits, grouped or continuous)
-- Expiry dates use `MM/YY`, `MM-YY`, or compact `MMYY` on non-card lines
-- IFSC codes follow the Indian format: 4 letters + `0` + 6 alphanumeric characters
-- Indian passbook conventions (`ACCOUNT`, `A/C`, `AC NO`) for account number hints
-- Parsing uses regex and manual rules only (no cloud APIs or ML-based field extraction)
-
-## Limitations
-
-- OCR accuracy depends on lighting, blur, glare, and font quality
-- Digit correction (`O`/`0`, `I`/`1`, etc.) is applied only in numeric contexts; unusual layouts may still misparse
-- Cardholder/name detection uses heuristics and may miss or mis-rank names on noisy scans
-- Passbook layouts vary by bank; generic keyword heuristics may not cover all formats
-- ML Kit text recognition is not supported on all platforms (e.g. desktop/web)
-- No persistent storage, authentication, or backend integration
-
-## Future Improvements
-
-- Live camera preview with scan region overlay
-- Confidence scores per extracted field
-- Bank-specific passbook parsing templates
-- Expanded unit/integration test coverage with fixture images
-- User-editable fields before confirmation
-- Localization and accessibility audit
-
-## Testing
-
-Run all parser and validator tests:
-
-```bash
-flutter test test/luhn_validator_test.dart test/card_parser_test.dart test/passbook_parser_test.dart
-```
-
-Run the full test suite:
+Run tests:
 
 ```bash
 flutter test
 ```
 
-Tests cover valid and invalid cases for the Luhn validator, card parser, and passbook parser using `flutter_test`.
+### Android
 
----
+- `CAMERA` permission is declared in `android/app/src/main/AndroidManifest.xml`.
+- Ensure **Google Play services** / ML Kit models can download on first OCR use (device network may be required once).
 
-Built as a Flutter OCR scanning assignment. For development and evaluation purposes.
+## Libraries
+
+| Package | Role |
+|--------|------|
+| `card_scanner` | Native debit/credit card scan UI + base fields |
+| `google_mlkit_text_recognition` | On-device OCR for passbook images |
+| `flutter_bloc` | Events, states, `BlocBuilder` / `BlocListener` |
+| `equatable` | Value equality for models & states |
+| `image_picker` | Gallery (and optional re-use paths) |
+| `camera` | In-app camera capture for passbook flow |
+
+## Architecture
+
+- **`lib/core`**: shared constants, theme, utilities (Luhn, text cleanup, masking), helpers (name heuristics), reusable widgets.
+- **`lib/features/card_scanner`**: `data` (repository wrapping `card_scanner` + parser), `parser`, `models`, `bloc`, `screens`.
+- **`lib/features/passbook_scanner`**: `data` (ML Kit OCR + repository), `parser`, `models`, `bloc` (including a dedicated `CameraCaptureBloc`), `screens`.
+- **`lib/features/home`**: simple module navigation hub.
+
+Business rules stay out of widgets: repositories orchestrate IO/plugins; parsers are pure Dart; BLoCs translate user intents into states.
+
+## Assumptions
+
+- **Card module**: `card_scanner` returns structured strings; we **re-validate** with an in-house **Luhn** implementation and merge with `CardParser` heuristics for OCR-style noise (`O`/`I` confusions, spacing).
+- **Passbook module**: Indian-style **IFSC** (`AAAA0XXXXXX`) and **account numbers** (9–18 digits, heuristics to avoid phone numbers / IFSC fragments). Digit OCR fixes (`O`→`0`, etc.) are applied **only on lines that already contain digits**, so holder names like `DOE` are not corrupted.
+- **Card preview**: the plugin does **not** return a bitmap; the UI documents this and shows a structured placeholder card.
+
+## Limitations
+
+- OCR quality depends on lighting, focus, and device; **partial scans** may yield incomplete `BankDetails` (surfaced via snack bar + `—` placeholders).
+- `card_scanner` relies on native implementations; behavior can vary slightly by OEM/Android version.
+- IFSC / account detection uses heuristics — **always confirm** with the physical passbook before production use.
+
+## Future improvements
+
+- Inject repositories via `get_it` / pure `BlocProvider` at root for testing.
+- Golden tests for primary screens; integration tests with fake OCR outputs.
+- Optional manual correction sheet when parsers return low confidence.
+- iOS-specific `Info.plist` camera strings if targeting iOS.
+
+## Project layout
+
+```
+assets/
+└── demo/
+    └── app_demo.mp4          # README screen recording
+lib/
+├── core/
+│   ├── constants/
+│   ├── helpers/
+│   ├── theme/
+│   ├── utils/
+│   └── widgets/
+├── features/
+│   ├── home/
+│   ├── card_scanner/
+│   └── passbook_scanner/
+└── main.dart
+```

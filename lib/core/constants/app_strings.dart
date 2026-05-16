@@ -1,44 +1,45 @@
-/// Centralized user-facing strings for the app.
 abstract final class AppStrings {
-  // App
   static const String ocrScanner = 'OCR Scanner';
 
-  // Home
-  static const String scanCard = 'Scan Card';
-  static const String scanPassbook = 'Scan Passbook';
+  static const String scanCard = 'Card Scanner';
+  static const String scanPassbook = 'Passbook Scanner';
 
-  // Card scanner
-  static const String scanCardTitle = 'Scan Card';
-  static const String capture = 'Capture';
-  static const String retake = 'Retake';
-  static const String noImageCaptured = 'No image captured';
-  static const String cardDetails = 'Card details';
+  static const String scanCardTitle = 'Card Scanner';
+  static const String scanCardCta = 'Scan with camera';
+  static const String cardDetails = 'Extracted details';
   static const String cardNumber = 'Card number';
   static const String expiry = 'Expiry';
   static const String cardholder = 'Cardholder';
-  static const String processingCard = 'Processing card...';
+  static const String processingCard = 'Processing card…';
   static const String noValidCardDetected =
-      'No valid card detected. Please capture a clear image and try again.';
+      'No valid card number (Luhn) was found. Try again with better lighting.';
   static const String couldNotReadCard =
-      'Could not read the card. Please try again.';
+      'Something went wrong while reading the card.';
+  static const String scanCancelled =
+      'Scan was cancelled before a card was captured.';
+  static const String cardPreviewHint =
+      'The native scanner validates the card visually; no preview image is returned.';
 
-  // Passbook scanner
-  static const String scanPassbookTitle = 'Scan Passbook';
+  static const String scanPassbookTitle = 'Passbook Scanner';
   static const String camera = 'Camera';
   static const String gallery = 'Gallery';
   static const String noImageSelected = 'No image selected';
   static const String passbookEmptyStateHint =
-      'Use the camera or pick an image from your gallery to scan passbook details.';
-  static const String bankDetails = 'Bank details';
+      'Capture a passbook page or pick a photo from your gallery.';
+  static const String bankDetails = 'Extracted details';
   static const String accountHolder = 'Account holder';
   static const String accountNumber = 'Account number';
   static const String ifscCode = 'IFSC code';
-  static const String readingPassbook = 'Reading passbook...';
+  static const String readingPassbook = 'Reading passbook…';
   static const String noPassbookDetailsFound =
-      'No passbook details found. Try a clearer photo of the account page.';
+      'Could not confidently extract account details. Try a sharper, well-lit photo.';
   static const String couldNotReadPassbook =
-      'Could not read the passbook. Please try again.';
+      'Could not read the image. Please try again.';
+  static const String cameraInitFailed =
+      'Could not start the camera. Check permissions and try again.';
+  static const String noCameraHardware = 'No camera is available on this device.';
 
-  // Common
   static const String notAvailable = '—';
+  static const String retry = 'Retry';
+  static const String clear = 'Clear';
 }

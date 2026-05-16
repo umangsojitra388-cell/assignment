@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 
-import 'common/app_theme.dart';
 import 'core/constants/app_strings.dart';
-import 'screens/home_screen.dart';
+import 'core/theme/app_theme.dart';
+import 'features/home/screens/home_screen.dart';
 
 void main() {
-  runApp(const MyApp());
+  WidgetsFlutterBinding.ensureInitialized();
+  runApp(const OcrScannerApp());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class OcrScannerApp extends StatelessWidget {
+  const OcrScannerApp({super.key});
 
   @override
   Widget build(BuildContext context) {

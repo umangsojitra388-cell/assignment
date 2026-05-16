@@ -1,4 +1,4 @@
-import 'package:assignment/parsers/card_parser.dart';
+import 'package:assignment/features/card_scanner/parser/card_parser.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
@@ -35,6 +35,16 @@ VALID THRU 01/30
 
       expect(details.cardNumber, isNull);
       expect(details.expiryDate, isNotNull);
+    });
+
+    test('normalizes compact expiry 1225 on its own line', () {
+      const rawText = '''
+4111 1111 1111 1111
+1225
+''';
+
+      final details = parser.parse(rawText);
+      expect(details.expiryDate, '12/25');
     });
   });
 }
