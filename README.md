@@ -6,19 +6,16 @@ Interview-ready Flutter sample focused on **clean architecture**, **BLoC-only st
 
 End-to-end walkthrough on Android: home → **Card Scanner** (native `card_scanner` + Luhn validation + masked PAN) → **Passbook Scanner** (camera / gallery + ML Kit OCR + structured bank fields).
 
-Watch the demo below directly in this README (after you push `assets/demo/app_demo.mp4` to `main`):
+**Watch in README** (Google Drive player loads below):
 
-<video controls autoplay muted playsinline loop width="100%" style="max-width: 100%; border-radius: 12px;">
-  <source src="https://raw.githubusercontent.com/umangsojitra388-cell/assignment/main/assets/demo/app_demo.mp4" type="video/mp4">
-  <source src="assets/demo/app_demo.mp4" type="video/mp4">
-</video>
+<iframe src="https://drive.google.com/file/d/1sF_LtUPEcR-qgIO6P9tkQ71W9LLJA5SA/preview" width="100%" height="480" allow="autoplay; encrypted-media" allowfullscreen style="border:0; border-radius:12px; max-width:100%;"></iframe>
 
 | | |
 |---|---|
-| **Stream in browser** | [Open demo video (MP4)](https://raw.githubusercontent.com/umangsojitra388-cell/assignment/main/assets/demo/app_demo.mp4) |
-| **Repo file** | [`assets/demo/app_demo.mp4`](assets/demo/app_demo.mp4) (~12 MB) |
+| **Open on Google Drive** | [Screen_Recording_20260516_115429.mp4](https://drive.google.com/file/d/1sF_LtUPEcR-qgIO6P9tkQ71W9LLJA5SA/view?usp=sharing) |
+| **Direct preview** | [drive.google.com/.../preview](https://drive.google.com/file/d/1sF_LtUPEcR-qgIO6P9tkQ71W9LLJA5SA/preview) |
 
-> If the player is empty before your first push, commit and push the video file, then refresh this page on GitHub.
+> Keep the Drive file **“Anyone with the link”** so the player works on GitHub. If the embed is blank, use the Google Drive link above.
 
 ## Features
 
@@ -93,8 +90,7 @@ Business rules stay out of widgets: repositories orchestrate IO/plugins; parsers
 
 ```
 assets/
-└── demo/
-    └── app_demo.mp4          # README screen recording
+└── demo/                     # optional local copy of demo (README uses Google Drive)
 lib/
 ├── core/
 │   ├── constants/
